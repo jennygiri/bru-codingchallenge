@@ -26,17 +26,7 @@ const List = ({ breweries }) => {
                 {brewery.street} | {brewery.city}, {brewery.state} |{' '}
                 {brewery.postal_code}
               </Text>
-              <Text
-              //style={{
-              //  border: '1px solid black',
-              //  width: '30%',
-              //  borderRadius: '10px',
-              //  textAlign: 'center',
-              //  margin: '5px',
-              //}}
-              >
-                Brewery Type: {brewery.brewery_type}
-              </Text>
+              <Text>Brewery Type: {brewery.brewery_type}</Text>
               <Link
                 href={brewery.website_url}
                 target='_blank'

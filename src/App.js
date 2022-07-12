@@ -7,12 +7,12 @@ const url = 'https://api.openbrewerydb.org/breweries?by_city=';
 
 const App = () => {
   const [city, setCity] = useState('boston');
-  //^used a useState here for future integration of search capability
+  const [searchTerm, setSearchTerm] = useState('');
   const [breweries, setBreweries] = useState([]);
 
-  const getBreweriesByCity = () => {
+  const getBreweriesByCity = (cityName = city) => {
     axios
-      .get(url + city)
+      .get(url + cityName)
       .then((response) => {
         setBreweries(response.data.filter((b) => b['latitude']));
       })
@@ -21,13 +21,39 @@ const App = () => {
       });
   };
 
+  const handleChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleSearch = (event) => {
+    if (event.key === 'Enter') {
+      let temp = searchTerm.split(' ').join('_').toLowerCase();
+      setCity(temp);
+      getBreweriesByCity(temp);
+    }
+  };
+
+  useEffect(() => {
+    if (searchTerm === '') {
+      setCity('boston');
+      getBreweriesByCity('boston');
+    }
+  }, [searchTerm]);
   useEffect(() => {
     getBreweriesByCity();
   }, []);
 
   return (
     <Main className='App'>
-      <Header>Bru.</Header>
+      <Header>
+        Bru.
+        <Search
+          onChange={handleChange}
+          value={searchTerm}
+          placeholder='Search for Breweries in any City'
+          onKeyPress={handleSearch}
+        ></Search>
+      </Header>
       <Container>
         <List breweries={breweries} />
       </Container>
@@ -49,6 +75,14 @@ const Header = styled.div`
   color: white;
   font-family: 'Montserrat', sans-serif;
   font-weight: 900;
+`;
+
+const Search = styled.input`
+  position: fixed;
+  top: 5%;
+  right: 5%;
+  height: 3%;
+  width: 30%;
 `;
 
 const Container = styled.div`
@@ -75,12 +109,4 @@ export default App;
 //    }
 //  }
 //  setLocations(temp);
-//};
-
-//for enabling city search:
-//const handleSearch = (term) => {
-//  term = term.split(' ').join('_').toLowerCase();
-//  console.log('term', term);
-//  setCity(term);
-//  getBreweriesByCity();
 //};
