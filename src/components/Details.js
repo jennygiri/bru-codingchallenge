@@ -1,6 +1,5 @@
-//import { useState, useEffect, useCallback, useMemo } from 'react';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
-import { GOOGLE_MAPS_API_KEY } from './config.js';
+import { GOOGLE_MAPS_API_KEY } from './../config.js';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 
@@ -9,6 +8,7 @@ const Details = ({ selected, setDetailsToggle }) => {
   const mapContainerStyle = {
     width: '100%',
     height: '100%',
+    position: 'absolute',
   };
   console.log('selected', selected);
   //useEffect(() => {
@@ -34,15 +34,17 @@ const Details = ({ selected, setDetailsToggle }) => {
   };
 
   return (
-    <Background onClick={leaveModal}>
+    <Background>
       <Wrapper>
+        <button onClick={leaveModal}>x</button>
         {isLoaded && (
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
-            zoom={3}
-            center={center}
-            //onLoad={onLoad}
-            //onUnmount={onUnmount}
+            zoom={15}
+            center={{
+              lat: parseFloat(selected['latitude']),
+              lng: parseFloat(selected['longitude']),
+            }}
           >
             {selected && (
               <Marker
@@ -55,6 +57,13 @@ const Details = ({ selected, setDetailsToggle }) => {
             )}
           </GoogleMap>
         )}
+        <Text>
+          <div>{selected.name}</div>
+          <div>
+            {selected.street} | {selected.city}, {selected.state} |{' '}
+            {selected.postal_code}
+          </div>
+        </Text>
       </Wrapper>
     </Background>
   );
@@ -71,13 +80,19 @@ const Background = styled.div`
 `;
 
 const Wrapper = styled.div`
-  position: fixed;
+  position: absolute;
   background: antiquewhite;
   width: 80%;
   height: 80%;
   color: rgba(0, 0, 139, 0.7);
   top: 10%;
   left: 10%;
+`;
+
+const Text = styled.div`
+  position: fixed;
+  color: black;
+  background-color: #d2b48cc9;
 `;
 
 //const StyledMap = styled.GoogleMap`
