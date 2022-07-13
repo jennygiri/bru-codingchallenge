@@ -39,6 +39,7 @@ const App = () => {
       getBreweriesByCity('boston');
     }
   }, [searchTerm]);
+
   useEffect(() => {
     getBreweriesByCity();
   }, []);
