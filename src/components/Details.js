@@ -4,7 +4,7 @@ import {
   Marker,
   InfoWindow,
 } from '@react-google-maps/api';
-import { GOOGLE_MAPS_API_KEY } from './../config.js';
+//import { GOOGLE_MAPS_API_KEY } from './../config.js';
 import styled from 'styled-components';
 
 const Details = ({ selected, setDetailsToggle }) => {
@@ -16,7 +16,7 @@ const Details = ({ selected, setDetailsToggle }) => {
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+    googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
   });
 
   const onMarkerLoad = (marker) => {
